@@ -1,1 +1,68 @@
-hello world
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Grafkom Minggu1</title>
+</head>
+
+<body>
+    <h1>Hanvy Hendrawan - 222117028</h1>
+    <!-- <h2>Tugas Grafkom</h2>
+    <p>Model: sesuatu yang mewakili sesuatu yang lain</p>
+    <p>m adalah perbedaan horizontal dan vertikal, c adalah jarak garis ke titik 0</p> -->
+
+    <div class="kotakTempatGambar" style="display: flex; align-items: center; justify-content: center; margin: 0;">
+        <canvas id="gambarTitikNyambung" width="512" height="512" style="background-color: grey; border: 1px solid black;"></canvas>
+    </div>
+
+    <script>
+        let kotak = document.getElementById("gambarTitikNyambung");
+            let canva = kotak.getContext("2d");
+            let titiknya = [];
+
+            kotak.addEventListener("click", function (event) {
+                let x = event.clientX - kotak.getBoundingClientRect().left;
+                let y = event.clientY - kotak.getBoundingClientRect().top;
+
+                titiknya.push({ x, y });
+
+                if (titiknya.length == 2) {
+                    drawTitik(titiknya[0].x, titiknya[0].y);
+                    drawTitik(titiknya[1].x, titiknya[1].y);
+                    drawWithDDA(titiknya[0].x, titiknya[0].y, titiknya[1].x, titiknya[1].y);
+
+                    titiknya = [];
+                }
+            });
+
+            function drawTitik(x, y) {
+                canva.beginPath();
+                canva.arc(x, y, 5, 0, 2 * Math.PI);
+                canva.fillStyle = "#000";
+                canva.fill();
+                canva.closePath();
+            }
+
+            function drawWithDDA(x1, y1, x2, y2) {
+                let dx = x2 - x1;
+                let dy = y2 - y1;
+                let steps = Math.max(Math.abs(dx), Math.abs(dy));
+                let xNaik = dx / steps;
+                let yNaik = dy / steps;
+
+                let x = x1;
+                let y = y1;
+
+                for (let i = 0; i < steps; i++) {
+                    drawTitik(Math.round(x), Math.round(y));
+                    x += xNaik;
+                    y += yNaik;
+                }
+            }
+        </script>
+    </body>
+
+</html>
